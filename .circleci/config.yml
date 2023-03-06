@@ -74,4 +74,5 @@ jobs:
 workflows:
   test:
     jobs:
+      - build-Docs
       - hpu-test
