@@ -31,7 +31,7 @@ jobs:
       - store_artifacts:
           path: docs/build/html/
           destination: html
-  test:
+  hpu-test:
     docker:
       - image: "vault.habana.ai/gaudi-docker/1.7.1/ubuntu20.04/habanalabs/pytorch-installer-1.13.0:latest"
         environment:
@@ -50,6 +50,7 @@ jobs:
             sudo pip list
             sudo pip uninstall -y lightning pytorch-lightning
             sudo pip list
+            python -m pytest -sv accelerators/test_hpu.py --forked --junitxml=hpu1_test-results.xml
  #     - run:
  #         name: Run tests
  #         command: |
@@ -59,4 +60,4 @@ jobs:
 workflows:
   test:
     jobs:
-      - build-Docs
+      - hpu-test
