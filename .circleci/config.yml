@@ -47,11 +47,16 @@ jobs:
             echo "##vso[task.setvariable variable=CONTAINER_ID]$(head -1 /proc/self/cgroup|cut -d/ -f3)"
             # install sudo in container
             sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+            export PACKAGE_NAME="pytorch"
+            export FREEZE_REQUIREMENTS="1"
+            export PYTHONPATH="${PYTHONPATH}:$(pwd)"
             sudo pip list
             sudo pip uninstall -y lightning pytorch-lightning
-            sudo pip list
+            pip install -q -r .actions/requirements.txt
+            python .actions/assistant.py requirements_prune_pkgs "--packages=[torch,torchvision]"
+            pip install ".[extra,test]"
+            pip list
             # python -m pytest -sv accelerators/test_hpu.py --forked --junitxml=hpu1_test-results.xml
-            export PYTHONPATH="${PYTHONPATH}:$(pwd)"
             python "examples/pl_hpu/mnist_sample.py"
  #     - run:
  #         name: Run tests
