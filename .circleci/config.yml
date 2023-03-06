@@ -1,5 +1,18 @@
 version: 2.1
 jobs:
+  build-Docs:
+    docker:
+      - image: readthedocs/build:latest
+    steps:
+      - checkout
+      - run:
+          command: |
+            git submodule update --init --recursive
+          name: Init git submodule
+      - *make_docs
+      - store_artifacts:
+          path: docs/build/html/
+          destination: html
   test:
     docker:
       - image: "vault.habana.ai/gaudi-docker/1.7.1/ubuntu20.04/habanalabs/pytorch-installer-1.13.0:latest"
@@ -28,4 +41,4 @@ jobs:
 workflows:
   test:
     jobs:
-      - test
+      - build-Docs
