@@ -51,6 +51,8 @@ jobs:
             sudo pip uninstall -y lightning pytorch-lightning
             sudo pip list
             python -m pytest -sv accelerators/test_hpu.py --forked --junitxml=hpu1_test-results.xml
+            export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+            python "pl_hpu/mnist_sample.py"
  #     - run:
  #         name: Run tests
  #         command: |
