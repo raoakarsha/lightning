@@ -18,6 +18,19 @@ references:
         make -f html --jobs 2 SPHINXOPTS="-W"
 
 jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:16.10
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Run tests
+          command: npm test
   build-Docs:
     docker:
       - image: readthedocs/build:latest
@@ -74,5 +87,6 @@ jobs:
 workflows:
   test:
     jobs:
-      - build-Docs
-      - hpu-test
+      - build-and-test
+      #- build-Docs
+      #- hpu-test
