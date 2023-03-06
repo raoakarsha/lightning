@@ -14,7 +14,8 @@ references:
         pip install -r requirements/docs.txt
         pip list
         cd docs
-        make html --jobs 2 SPHINXOPTS="-W"
+        make -f clean
+        make -f html --jobs 2 SPHINXOPTS="-W"
 
 jobs:
   build-Docs:
