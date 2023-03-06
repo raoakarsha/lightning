@@ -23,25 +23,9 @@ jobs:
  #         name: Run tests
  #         command: |
  #           python -m pytest --cov-report xml --cov-report term --cov .
- 
-   build-Docs:
-    docker:
-      - image: readthedocs/build:latest
-    steps:
-      - checkout
-      - run:
-          command: |
-            git submodule update --init --recursive
-          name: Init git submodule
-      - *make_docs
-      - store_artifacts:
-          # allows us to preview the generated html pages
-          path: docs/build/html/
-          destination: html
 
       
 workflows:
   test:
     jobs:
       - test
-      - build-Docs
