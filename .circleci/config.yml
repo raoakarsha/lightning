@@ -1,7 +1,6 @@
 version: 2.1
 jobs:
-
-  download_image:
+  test:
     docker:
       - image: "vault.habana.ai/gaudi-docker/1.7.1/ubuntu20.04/habanalabs/pytorch-installer-1.13.0:latest"
         environment:
