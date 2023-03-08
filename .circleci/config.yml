@@ -91,6 +91,11 @@ workflows:
             - test:
                   requires:
                       - prepare-dependencies
+            - hold:
+                  type: approval
+                  requires:
+                      - build-docker-imag
+                      - test
             - deploy-docker-image:
                   context: docker-hub
                   requires:
