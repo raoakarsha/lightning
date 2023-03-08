@@ -94,7 +94,7 @@ workflows:
             - hold:
                   type: approval
                   requires:
-                      - build-docker-imag
+                      - build-docker-image
                       - test
             - deploy-docker-image:
                   context: docker-hub
