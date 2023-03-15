@@ -21,9 +21,6 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/node:16.10
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
       - node/install-packages:
@@ -69,6 +66,7 @@ jobs:
             python .actions/assistant.py requirements_prune_pkgs "--packages=[torch,torchvision]"
             pip install ".[extra,test]"
             pip install -q -r .actions/requirements.txt
+            python -m pytest --cov-report xml --cov-report term --cov .
             python .actions/assistant.py copy_replace_imports --source_dir="./tests/tests_pytorch" \
             --source_import="lightning.fabric,lightning.pytorch" \
             --target_import="lightning_fabric,pytorch_lightning"
@@ -78,15 +76,10 @@ jobs:
             pip list
             # python -m pytest -sv accelerators/test_hpu.py --forked --junitxml=hpu1_test-results.xml
             python "examples/pl_hpu/mnist_sample.py"
- #     - run:
- #         name: Run tests
- #         command: |
- #           python -m pytest --cov-report xml --cov-report term --cov .
-
       
 workflows:
   test:
     jobs:
       - build-and-test
-      #- build-Docs
-      #- hpu-test
+      - build-Docs
+      - hpu-test
