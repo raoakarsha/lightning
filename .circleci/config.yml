@@ -41,7 +41,7 @@ jobs:
     steps:
       - checkout
       - run:
-         name: habana docker image
+         name: pull habana docker image and run hpu test
          command: |
           # perform all required actions
             echo "##vso[task.setvariable variable=CONTAINER_ID]$(head -1 /proc/self/cgroup|cut -d/ -f3)"
@@ -55,15 +55,14 @@ jobs:
             python .actions/assistant.py requirements_prune_pkgs "--packages=[torch,torchvision]"
             pip install ".[extra,test]"
             pip install -q -r .actions/requirements.txt
-            python -m pytest --cov-report xml --cov-report term --cov .
             python .actions/assistant.py copy_replace_imports --source_dir="./tests/tests_pytorch" \
             --source_import="lightning.fabric,lightning.pytorch" \
             --target_import="lightning_fabric,pytorch_lightning"
             python .actions/assistant.py copy_replace_imports --source_dir="./examples/pl_hpu" \
             --source_import="lightning.fabric,lightning.pytorch" \
             --target_import="lightning_fabric,pytorch_lightning"
-            pip list
-            # python -m pytest -sv accelerators/test_hpu.py --forked --junitxml=hpu1_test-results.xml
+            python -m pytest --cov-report xml --cov-report term --cov .
+            python -m pytest -sv accelerators/test_hpu.py --forked --junitxml=hpu1_test-results.xml
             python "examples/pl_hpu/mnist_sample.py"
       
 workflows:
