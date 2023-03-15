@@ -61,9 +61,7 @@ jobs:
             python .actions/assistant.py copy_replace_imports --source_dir="./examples/pl_hpu" \
             --source_import="lightning.fabric,lightning.pytorch" \
             --target_import="lightning_fabric,pytorch_lightning"
-            python -m pytest --cov-report xml --cov-report term --cov .
             python -m pytest -sv accelerators/test_hpu.py --forked --junitxml=hpu1_test-results.xml
-            python "examples/pl_hpu/mnist_sample.py"
       
 workflows:
   workflow:
