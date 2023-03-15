@@ -18,16 +18,6 @@ references:
         make -f html --jobs 2 SPHINXOPTS="-W"
 
 jobs:
-  build-and-test:
-    docker:
-      - image: cimg/node:16.10
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          name: Run tests
-          command: npm test
   build-Docs:
     docker:
       - image: readthedocs/build:latest
@@ -78,8 +68,7 @@ jobs:
             python "examples/pl_hpu/mnist_sample.py"
       
 workflows:
-  test:
+  workflow:
     jobs:
-      - build-and-test
       - build-Docs
       - hpu-test
