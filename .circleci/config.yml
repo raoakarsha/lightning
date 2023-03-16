@@ -62,6 +62,8 @@ jobs:
             --source_import="lightning.fabric,lightning.pytorch" \
             --target_import="lightning_fabric,pytorch_lightning"
             python -m pytest -sv tests/tests_pytorch/accelerators/test_hpu.py --forked --junitxml=hpu1_test-results.xml
+      - store_test_results:
+         path: tests/tests_pytorch/accelerator/
       
 workflows:
   workflow:
