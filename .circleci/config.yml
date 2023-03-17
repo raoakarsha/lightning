@@ -81,7 +81,7 @@ jobs:
                       echo 'export __BUILD_VERSION="$(cat version.txt)"' >> "$BASH_ENV"
 
 workflows:
-    build-test-deploy:
+    build-test-deploying:
         jobs:
             - prepare-dependencies
             - build-production:
